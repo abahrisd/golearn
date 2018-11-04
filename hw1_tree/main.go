@@ -24,17 +24,10 @@ func main() {
 
 func dirTree(out io.Writer, path string, printFiles bool) error {
 
-	// получить все папки текущей папки
-	// если printFiles то и файлы
-	// повторить для всех полученных папок
-	// ???
-	// profit!
-
 	files, err := ioutil.ReadDir(path + "/")
 
 	if err != nil {
 		return err
-		// fmt.Println("Error in dirtree", err)
 	}
 
 	for _, f := range files {
@@ -45,10 +38,6 @@ func dirTree(out io.Writer, path string, printFiles bool) error {
 
 }
 
-/**
-Этот вариант не подходит т.к. непонятно в каком порядке идёт обход и на каком мы сейчас уровне...
-Или... мб есть возможность получить текущий уровень?
-*/
 func dirTreeWalk(out io.Writer, mypath string, printFiles bool) error {
 
 	err := filepath.Walk(mypath, func(path string, info os.FileInfo, err error) error {
@@ -63,27 +52,13 @@ func dirTreeWalk(out io.Writer, mypath string, printFiles bool) error {
 		}
 
 		var count int = len(strings.Split(path, "\\"))
-		// var strRes string = ""
-
-		/*
-			Если первый уровень тогда - ---
-			Если второй - то "   "
-
-
-		*/
 
 		if info.IsDir() {
-			//strRes += "|   "
-			// fmt.Printf("Dir: %+v \n", printLevel(count, "") + info.Name()+", path: "+path+" , deep: "+fmt.Sprintf("%v", count))
 			fmt.Printf("%+v \n", printLevel(count, "")+info.Name())
-			//fmt.Printf("Dir: ", info.Name())
 		} else {
-			//fmt.Printf("File: %+v \n", printLevel(count, "") + info.Name()+" "+fmt.Sprintf("%v", info.Size())+", path: "+path+" , deep: "+fmt.Sprintf("%v", count))
 			fmt.Printf("%+v \n", printLevel(count, "")+info.Name()+" ("+fmt.Sprintf("%v", info.Size())+")")
-			//fmt.Printf("File: ", info.Name(), info.Size)
 		}
 
-		//fmt.Printf("visited file or dir: %q\n", path)
 		return nil
 	})
 
@@ -106,8 +81,3 @@ func printLevel(deep int, pathPic string) (result string) {
 
 	return result
 }
-
-/*func printDir(file FileInfo) {
-
-	files, err := ioutil.ReadDir("./")
-}*/
